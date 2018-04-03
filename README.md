@@ -29,4 +29,4 @@ int update(
 ~~~
 
 ## Example:
-See [examples/data_logger.ino](data_logger.ino)
+See [data_logger.ino](examples/data_logger.ino)
