@@ -22,7 +22,7 @@ void setup() {
 
   // Connect to Wi-Fi network
   WiFi.mode(WIFI_STA);
-  WiFiMulti.addAP("Carlton 2: Electric Boogaloo", "IamTheKing");
+  WiFiMulti.addAP("SSID", "PASSWORD");
 
   while(WiFiMulti.run() != WL_CONNECTED) {
       Serial.print(".");
