@@ -2,6 +2,8 @@
 
 A simple way to log data from your ESP 8266 to an InfluxDB server. Designed for use in the ESP 8266 Core for Arduino enviroment. 
 
+***TOTALLY UNTESTED. STAY TUNED***
+
 ## Documentation:
 
 Create a database object with some info about your database!
@@ -18,7 +20,7 @@ ESP8266Influx(
 
 Send some data to that database!
 
-~~~
+~~~c
 int update(
 	char* measurement,
 	char* field_key,
