@@ -1,16 +1,46 @@
-#include "ESP8266Influx.h"
+#include "ESP8266InfluxServer.h"
 
-ESP8266Influx::ESP8266Influx(char* hostname, uint16_t port, char* database, char* tag_region, char* tag_host)
-{
-    client = WiFiClient();
-    hostname = hostname;
-    port = port;
-    database = database;
-    tag_region = tag_region;
-    tag_host = tag_host;
-}
+/** 
+ * Creates a Influx database object.
+ * 
+ * This is constructor creates it's own instance of WiFiClient. If you're
+ * only updating a single database, this should be fine. If you're doing many,
+ * then you should use the other constructor and pass in a shared 
+ * WiFiClient
+ */
+ESP8266InfluxServer::ESP8266InfluxServer(
+    const char* hostname,
+    uint16_t port
+ ) :
+    client(WiFiClient()), 
+    hostname(hostname),
+    port(port)
+{}
 
-int ESP8266Influx::update(char* measurement, char* field_key, int value)
+/**
+ * Constructor using a shared WiFiClient
+ */
+ESP8266InfluxServer::ESP8266InfluxServer(
+    const char* hostname,
+    uint16_t port
+    WiFiClient client
+ ) :
+    client(client), 
+    hostname(hostname),
+    port(port)
+{}
+
+/**
+ * Sends a single data point to the database.
+ * 
+ * Requires:
+ *  char* measurement
+ *  char* field_key
+ *  int value
+ * 
+ * Returns some positive int if successfull.
+ */
+int ESP8266InfluxServer::update(InfluxMeasurement measurement, int value)
 {
     // Create connection
     if (!client.connect(hostname, port)) {
@@ -25,13 +55,13 @@ int ESP8266Influx::update(char* measurement, char* field_key, int value)
 
     // Build the payload
     String payload = "";
-    payload.concat(measurement);
+    payload.concat(measurement.measurement);
     payload.concat(",host=");
-    payload.concat(tag_host);
+    payload.concat(measurement.tag_host);
     payload.concat(",region=");
-    payload.concat(tag_region);
+    payload.concat(measurement.tag_region);
     payload.concat(" ");
-    payload.concat(field_key);
+    payload.concat(measurement.field_key);
     payload.concat("=");
     payload.concat(value);
 
@@ -55,4 +85,8 @@ int ESP8266Influx::update(char* measurement, char* field_key, int value)
     client.println("");
     client.println(payload);
 
+    // Read back one line from server
+    String line = client.readStringUntil('\r');
+    client.stop();
+    return line;
 }

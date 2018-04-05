@@ -15,26 +15,38 @@
   #include "WProgram.h"
 #endif
 
-#ifndef ESP8266Influx_h
+#ifndef ESP8266InfluxServer_h
 
 // These are part of the ESP8266 core for the Arduino enviroment
 // https://github.com/esp8266/Arduino
 #include <ESP8266WiFi.h>
 #include <ESP8266WiFiMulti.h>
 
-class ESP8266Influx
+#include "InfluxMeasurement.h"
+
+class ESP8266InfluxServer
 {
     public:
-        ESP8266Influx(char* hostname, uint16_t port, char* database, char* tag_region, char* tag_host);
-        int update(char* measurement, char* field_key, int value);
+        ESP8266InfluxServer(
+            const char* hostname,
+            uint16_t port
+        );
+
+        ESP8266InfluxServer(
+            const char* hostname,
+            uint16_t port,
+            WiFiClient client
+        );
+
+        int update(
+            InfluxMeasurement measurement,
+            int value
+        );
 
     private:
         WiFiClient client;
         uint16_t port;
         char* hostname;
-        char* database;
-        char* tag_region;
-        char* tag_host;
 };
 
 #endif
