@@ -16,13 +16,22 @@
 #endif
 
 #ifndef ESP8266InfluxServer_h
+#define ESP8266InfluxServer_h
+
+// #include <InfluxMeasurement.h>
+
+struct Measurement {
+    char* database;
+    char* measurement_name;
+    char* field_key;
+    char* tag_region;
+    char* tag_host;
+};
 
 // These are part of the ESP8266 core for the Arduino enviroment
 // https://github.com/esp8266/Arduino
 #include <ESP8266WiFi.h>
 #include <ESP8266WiFiMulti.h>
-
-#include "InfluxMeasurement.h"
 
 class ESP8266InfluxServer
 {
@@ -39,14 +48,14 @@ class ESP8266InfluxServer
         );
 
         int update(
-            InfluxMeasurement measurement,
+            Measurement measurement,
             int value
         );
 
     private:
         WiFiClient client;
         uint16_t port;
-        char* hostname;
+        const char* hostname;
 };
 
 #endif

@@ -12,17 +12,18 @@ ESP8266InfluxServer::ESP8266InfluxServer(
     const char* hostname,
     uint16_t port
  ) :
-    client(WiFiClient()), 
     hostname(hostname),
     port(port)
-{}
+{
+    client = WiFiClient();
+}
 
 /**
  * Constructor using a shared WiFiClient
  */
 ESP8266InfluxServer::ESP8266InfluxServer(
     const char* hostname,
-    uint16_t port
+    uint16_t port,
     WiFiClient client
  ) :
     client(client), 
@@ -40,7 +41,7 @@ ESP8266InfluxServer::ESP8266InfluxServer(
  * 
  * Returns some positive int if successfull.
  */
-int ESP8266InfluxServer::update(InfluxMeasurement measurement, int value)
+int ESP8266InfluxServer::update(Measurement measurement, int value)
 {
     // Create connection
     if (!client.connect(hostname, port)) {
@@ -55,7 +56,7 @@ int ESP8266InfluxServer::update(InfluxMeasurement measurement, int value)
 
     // Build the payload
     String payload = "";
-    payload.concat(measurement.measurement);
+    payload.concat(measurement.measurement_name);
     payload.concat(",host=");
     payload.concat(measurement.tag_host);
     payload.concat(",region=");
@@ -88,5 +89,5 @@ int ESP8266InfluxServer::update(InfluxMeasurement measurement, int value)
     // Read back one line from server
     String line = client.readStringUntil('\r');
     client.stop();
-    return line;
+    return line.toInt();
 }
