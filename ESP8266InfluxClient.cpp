@@ -54,8 +54,10 @@ int ESP8266InfluxClient::update(Measurement measurement, int value)
  *  Measurement measurement
  *  float value
  * 
- * Only accurate to 10 places, including the decimal point.
+ * Only accurate to 9 digits, plus one for the decimal point.
  * Returns some positive int if successfull.
+ * 
+ * #TODO: Find better solution!
  */
 int ESP8266InfluxClient::update(Measurement measurement, float value)
 {
@@ -90,11 +92,11 @@ int ESP8266InfluxClient::update_helper(Measurement measurement, char* value)
     // This will send the request to the server
     client.print("POST /write?db=");
     client.print(measurement.database);
-    client.print(":");
-    client.print(this->port);
     client.println(" HTTP/1.1");
     client.print("Host: ");
-    client.println(this->hostname);
+    client.print(this->hostname);
+    client.print(":");
+    client.println(this->port);
     client.println("Content-Type: application/x-www-form-urlencoded");
     client.print("content-length: ");
     client.println(payload.length());
