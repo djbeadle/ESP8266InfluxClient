@@ -1,4 +1,4 @@
-#include "ESP8266InfluxServer.h"
+#include "ESP8266InfluxClient.h"
 
 /** 
  * Creates a Influx database object.
@@ -8,7 +8,7 @@
  * then you should use the other constructor and pass in a shared 
  * WiFiClient
  */
-ESP8266InfluxServer::ESP8266InfluxServer(
+ESP8266InfluxClient::ESP8266InfluxClient(
     const char* hostname,
     uint16_t port
  ) :
@@ -21,7 +21,7 @@ ESP8266InfluxServer::ESP8266InfluxServer(
 /**
  * Constructor using a shared WiFiClient
  */
-ESP8266InfluxServer::ESP8266InfluxServer(
+ESP8266InfluxClient::ESP8266InfluxClient(
     const char* hostname,
     uint16_t port,
     WiFiClient client
@@ -35,13 +35,36 @@ ESP8266InfluxServer::ESP8266InfluxServer(
  * Sends a single data point to the database.
  * 
  * Requires:
- *  char* measurement
- *  char* field_key
+ *  Measurement measurement
  *  int value
  * 
  * Returns some positive int if successfull.
  */
-int ESP8266InfluxServer::update(Measurement measurement, int value)
+int ESP8266InfluxClient::update(Measurement measurement, int value)
+{
+    char* temp = "";
+    temp += value;
+    update_helper(measurement, temp);
+}
+
+/**
+ * Sends a single data point to the database.
+ * 
+ * Requires:
+ *  Measurement measurement
+ *  float value
+ * 
+ * Only accurate to 10 places, including the decimal point.
+ * Returns some positive int if successfull.
+ */
+int ESP8266InfluxClient::update(Measurement measurement, float value)
+{
+    char temp[10];
+    sprintf(temp, "%f", value);
+    update_helper(measurement, temp);
+}
+
+int ESP8266InfluxClient::update_helper(Measurement measurement, char* value)
 {
     // Create connection
     if (!client.connect(hostname, port)) {
@@ -50,9 +73,6 @@ int ESP8266InfluxServer::update(Measurement measurement, int value)
         delay(5000);
         return -1;
     }
-
-    // [measurement],host=[tag_host],region=[tag_region] [field_key]=[value] 
-    // "basement,host=esp8266one,region=us-east cpm=";
 
     // Build the payload
     String payload = "";
@@ -68,18 +88,13 @@ int ESP8266InfluxServer::update(Measurement measurement, int value)
 
     // Build the header and send it to the server
     // This will send the request to the server
-    client.println("POST /write?db=FiveOhTwo HTTP/1.1");
+    client.print("POST /write?db=");
+    client.print(measurement.database);
+    client.print(":");
+    client.print(this->port);
+    client.println(" HTTP/1.1");
     client.print("Host: ");
-    client.println("192.168.1.152");
-    client.println("Content-Type: application/x-www-form-urlencoded");
-    client.print("content-length: ");
-    client.println(payload.length());
-    client.println("");
-    client.println(payload);
-        
-    client.println("POST /write?db=FiveOhTwo HTTP/1.1");
-    client.print("Host: ");
-    client.println("192.168.1.152");
+    client.println(this->hostname);
     client.println("Content-Type: application/x-www-form-urlencoded");
     client.print("content-length: ");
     client.println(payload.length());

@@ -15,8 +15,8 @@
   #include "WProgram.h"
 #endif
 
-#ifndef ESP8266InfluxServer_h
-#define ESP8266InfluxServer_h
+#ifndef ESP8266InfluxClient_h
+#define ESP8266InfluxClient_h
 
 // #include <InfluxMeasurement.h>
 
@@ -24,8 +24,8 @@ struct Measurement {
     char* database;
     char* measurement_name;
     char* field_key;
-    char* tag_region;
     char* tag_host;
+    char* tag_region;
 };
 
 // These are part of the ESP8266 core for the Arduino enviroment
@@ -33,15 +33,15 @@ struct Measurement {
 #include <ESP8266WiFi.h>
 #include <ESP8266WiFiMulti.h>
 
-class ESP8266InfluxServer
+class ESP8266InfluxClient
 {
     public:
-        ESP8266InfluxServer(
+        ESP8266InfluxClient(
             const char* hostname,
             uint16_t port
         );
 
-        ESP8266InfluxServer(
+        ESP8266InfluxClient(
             const char* hostname,
             uint16_t port,
             WiFiClient client
@@ -52,10 +52,21 @@ class ESP8266InfluxServer
             int value
         );
 
+        int update(
+            Measurement measurement,
+            float value
+        );
+
     private:
         WiFiClient client;
         uint16_t port;
         const char* hostname;
+        
+        int update_helper(
+            Measurement measurement,
+            char* value
+        );
+
 };
 
 #endif

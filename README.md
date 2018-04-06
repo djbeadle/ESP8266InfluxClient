@@ -1,8 +1,12 @@
 # ESP8266InfluxClient
 
-A simple way to log data from your ESP 8266 to an InfluxDB server. Designed for use in the ESP 8266 Core for Arduino enviroment. 
+A simple way to log data from your ESP8266 to an InfluxDB server using the [HTTP API](https://docs.influxdata.com/influxdb/v1.5/guides/writing_data/#writing-data-using-the-http-api). Designed for use in the ESP8266 Core for Arduino enviroment. 
 
-***TOTALLY UNTESTED. STAY TUNED***
+Does it work? It seems to! Please open an issue / contribute a pull request if you have fixes, features, optomizations, issues, etc.
+
+#TODO:
+- Authentication support
+- More update functions for various data types
 
 ## Documentation:
 
@@ -23,7 +27,6 @@ Send some data to that database!
 ~~~c
 int update(
 	char* measurement,
-	char* field_key,
 	int value
 );
 ~~~
