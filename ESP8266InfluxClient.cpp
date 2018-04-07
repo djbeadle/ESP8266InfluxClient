@@ -33,6 +33,7 @@ ESP8266InfluxClient::ESP8266InfluxClient(
 
 /**
  * Sends a single data point to the database.
+ * Will truncate values longer than 10 digits
  * 
  * Requires:
  *  Measurement measurement
@@ -42,8 +43,16 @@ ESP8266InfluxClient::ESP8266InfluxClient(
  */
 int ESP8266InfluxClient::update(Measurement measurement, int value)
 {
-    char* temp = "";
-    temp += value;
+    char temp[10];
+    sprintf(temp, "%i", value);
+
+    /*
+    Serial.print("2-Value: ");
+    Serial.println(value);
+    Serial.print("2-temp: ");
+    Serial.println(temp);
+    */
+
     update_helper(measurement, temp);
 }
 
@@ -58,11 +67,18 @@ int ESP8266InfluxClient::update(Measurement measurement, int value)
  * Returns some positive int if successfull.
  * 
  * #TODO: Find better solution!
+ *        Maybe this? -> https://arduino.stackexchange.com/a/26835
  */
 int ESP8266InfluxClient::update(Measurement measurement, float value)
 {
     char temp[10];
     sprintf(temp, "%f", value);
+    /*
+    Serial.print("1-Value: ");
+    Serial.println(value);
+    Serial.print("1-temp: ");
+    Serial.println(temp);
+    */
     update_helper(measurement, temp);
 }
 
@@ -86,7 +102,15 @@ int ESP8266InfluxClient::update_helper(Measurement measurement, char* value)
     payload.concat(" ");
     payload.concat(measurement.field_key);
     payload.concat("=");
-    payload.concat(value);
+    //payload.concat(value);
+    payload += value;
+
+    /*
+    Serial.print("Value: ");
+    Serial.println(value);
+    Serial.println("Payload:");
+    Serial.println(payload);
+    */
 
     // Build the header and send it to the server
     // This will send the request to the server
