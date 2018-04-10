@@ -32,6 +32,7 @@ struct Measurement {
 // https://github.com/esp8266/Arduino
 #include <ESP8266WiFi.h>
 #include <ESP8266WiFiMulti.h>
+#include <ESP82666HTTPClient>
 
 class ESP8266InfluxClient
 {
@@ -44,7 +45,7 @@ class ESP8266InfluxClient
         ESP8266InfluxClient(
             const char* hostname,
             uint16_t port,
-            WiFiClient client
+            HTTPClient client,
         );
 
         int update(
@@ -58,7 +59,7 @@ class ESP8266InfluxClient
         );
 
     private:
-        WiFiClient client;
+        HTTPClient client;
         uint16_t port;
         const char* hostname;
         
@@ -66,7 +67,6 @@ class ESP8266InfluxClient
             Measurement measurement,
             char* value
         );
-
 };
 
 #endif

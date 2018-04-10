@@ -1,0 +1,102 @@
+69.52 degrees Fahrenheit,
+0
+0.32 relative humidity,
+0
+69.49 degrees Fahrenheit,
+0
+0.32 relative humidity,
+0
+69.47 degrees Fahrenheit,
+0
+0.32 relative humidity,
+0
+69.43 degrees Fahrenheit,
+connection cfailed
+wait 5 sec...
+-1
+0.32 relative humidity,
+connection cfailed
+wait 5 sec...
+-1
+69.47 degrees Fahrenheit,
+connection cfailed
+wait 5 sec...
+-1
+0.32 relative humidity,
+connection cfailed
+wait 5 sec...
+-1
+69.47 degrees Fahrenheit,
+connection cfailed
+wait 5 sec...
+-1
+0.32 relative humidity,
+
+------------------------------------
+
+69.31 degrees Fahrenheit,
+connection cfailed
+wait 5 sec...
+-1
+0.32 relative humidity,
+connection cfailed
+wait 5 sec...
+-1
+69.27 degrees Fahrenheit,
+state: 5 -> 2 (1c0)
+rm 0
+pm close 7
+connection cfailed
+wait 5 sec...
+reconnect
+state: 2 -> 0 (0)
+scandone
+state: 0 -> 2 (b0)
+state: 2 -> 3 (0)
+state: 3 -> 5 (10)
+add 0
+aid 11
+cnt 
+
+connected with Carlton 2: Electric Boogaloo, channel 11
+dhcp client start...
+-1
+0.31 relative humidity,
+connection cfailed
+wait 5 sec...
+-1
+69.33 degrees Fahrenheit,
+connection cfailed
+wait 5 sec...
+pm open,type:2 0
+-1
+
+----------------------------------
+
+68.79 degrees Fahrenheit,
+connection cfailed
+wait 5 sec...
+-1
+0.32 relative humidity,
+connection cfailed
+wait 5 sec...
+state: 5 -> 2 (1c0)
+rm 0
+pm close 7
+reconnect
+state: 2 -> 0 (0)
+scandone
+state: 0 -> 2 (b0)
+state: 2 -> 3 (0)
+state: 3 -> 5 (10)
+add 0
+aid 11
+cnt 
+
+connected with Carlton 2: Electric Boogaloo, channel 11
+dhcp client start...
+-1
+68.81 degrees Fahrenheit,
+connection cfailed
+wait 5 sec...
+-1
