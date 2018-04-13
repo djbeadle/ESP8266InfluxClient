@@ -53,7 +53,7 @@ int ESP8266InfluxClient::update(Measurement measurement, int value)
     Serial.println(temp);
     */
 
-    update_helper(measurement, temp);
+    return update_helper(measurement, temp);
 }
 
 /**
@@ -79,7 +79,7 @@ int ESP8266InfluxClient::update(Measurement measurement, float value)
     Serial.print("1-temp: ");
     Serial.println(temp);
     */
-    update_helper(measurement, temp);
+    return update_helper(measurement, temp);
 }
 
 int ESP8266InfluxClient::update_helper(Measurement measurement, char* value)
