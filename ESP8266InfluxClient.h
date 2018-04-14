@@ -18,7 +18,10 @@
 #ifndef ESP8266InfluxClient_h
 #define ESP8266InfluxClient_h
 
-// #include <InfluxMeasurement.h>
+// These are part of the ESP8266 core for the Arduino enviroment
+// https://github.com/esp8266/Arduino
+#include <ESP8266WiFi.h>
+#include <ESP8266WiFiMulti.h>
 
 struct Measurement {
     char* database;
@@ -28,23 +31,12 @@ struct Measurement {
     char* tag_region;
 };
 
-// These are part of the ESP8266 core for the Arduino enviroment
-// https://github.com/esp8266/Arduino
-#include <ESP8266WiFi.h>
-#include <ESP8266WiFiMulti.h>
-
 class ESP8266InfluxClient
 {
     public:
         ESP8266InfluxClient(
             const char* hostname,
             uint16_t port
-        );
-
-        ESP8266InfluxClient(
-            const char* hostname,
-            uint16_t port,
-            WiFiClient client
         );
 
         int update(
@@ -58,7 +50,6 @@ class ESP8266InfluxClient
         );
 
     private:
-        WiFiClient client;
         uint16_t port;
         const char* hostname;
         

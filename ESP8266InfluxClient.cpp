@@ -14,21 +14,6 @@ ESP8266InfluxClient::ESP8266InfluxClient(
  ) :
     hostname(hostname),
     port(port)
-{
-    client = WiFiClient();
-}
-
-/**
- * Constructor using a shared WiFiClient
- */
-ESP8266InfluxClient::ESP8266InfluxClient(
-    const char* hostname,
-    uint16_t port,
-    WiFiClient client
- ) :
-    client(client), 
-    hostname(hostname),
-    port(port)
 {}
 
 /**
@@ -84,9 +69,11 @@ int ESP8266InfluxClient::update(Measurement measurement, float value)
 
 int ESP8266InfluxClient::update_helper(Measurement measurement, char* value)
 {
+    WiFiClient client;
+
     // Create connection
     if (!client.connect(hostname, port)) {
-        Serial.println("connection cfailed");
+        Serial.println("Connection in update_helper failed!");
         Serial.println("wait 5 sec...");
         delay(5000);
         return -1;
